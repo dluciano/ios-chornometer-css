@@ -1,0 +1,16 @@
+div.container
+  div.dial
+    - for i in (0..239)
+      div.time-mark class="r#{i}"
+      
+    div.time-hand
+    div.time-hand.blue
+    div.center
+    div.time-display
+      | 00:00.00
+      
+    div.sub-dial
+      - for i in (0..59)
+        div.time-mark-sub class="r60-#{i}"
+      div.time-hand-sub
+      div.time-hand-sub-center
