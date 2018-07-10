@@ -1,0 +1,294 @@
+$container-width: 50%;
+$container-height: 100%;
+$container-padding: 10px;
+$container-bck-color: black;
+
+$dial-width: 500px;
+$dial-height: $dial-width;
+$dial-width-radio: ($dial-width/2);
+
+$time-mark-width: 2px;
+$time-mark-height: 10px;
+$time-mark-background-color: #545456;  
+$time-mark-border-radius: 10%;  
+$time-mark-height-long: 16px;
+$time-mark-color-long: white;
+
+$time-mark-number-color: white;
+$time-mark-number-font-size: 1.5em;
+$time-mark-number-bottom: 1em;
+$time-mark-number-right: -.5em;
+
+$time-hand-width: 2px;
+$time-hand-height: 290px;  
+$time-hand-background-color: #ac825a;
+$time-hand-transform-y: -105px;
+$time-hand-animated: true;
+
+$lap-hand-animated: true;
+$lap-hand-animatation-dealy: 2s;
+
+$center-width: 8px;
+$center-height: $center-width;
+$center-bck-color: $container-bck-color;
+$center-border-size: 2px;
+$center-border-color: #ac825a;
+
+$time-display-color: white;
+$time-display-font-size: 25px;
+
+$sub-dial-width: 100px;
+$sub-dial-height: $sub-dial-width;
+$sub-dial-top: 100px;
+$sub-dial-width-radio: $sub-dial-width/2;
+
+$time-mark-sub-width: 2px;
+$time-mark-sub-height: 10px;
+$time-mark-sub-border-radius: $time-mark-border-radius;
+$time-mark-sub-background-color: $time-mark-background-color;  
+
+$time-mark-sub-height-long: 15px;
+
+$time-mark-sub-number-color: white;
+$time-mark-sub-number-font-size: .8em; 
+$time-mark-sub-number-bottom: 20px;
+$time-mark-sub-number-right: -5px; 
+
+$time-hand-sub-width: 50%;
+$time-hand-sub-height: 2px;
+$time-hand-sub-background-color: $time-hand-background-color;
+$time-hand-sub-translate-x: -52%;
+$time-hand-sub-animated: true;
+
+$time-hand-sub-center-width: 5px;
+$time-hand-sub-center-height: $time-hand-sub-center-width;
+$time-hand-sub-center-bck-color: $time-hand-sub-background-color;
+
+.container{  
+  position: absolute;  
+  display: flex;
+  justify-content: center;
+  
+  width: $container-width;
+  height: $container-height;
+  padding: $container-padding;
+  
+  background-color: $container-bck-color;
+}
+
+.dial{
+  position: absolute;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  border-radius: 100%;
+  
+  width: $dial-width;
+  height: $dial-height;
+}
+
+.time-mark{
+  position: absolute;
+  
+  width: $time-mark-width;
+  height: $time-mark-height;
+  border-radius: $time-mark-border-radius;
+  background-color: $time-mark-background-color;    
+}
+
+.time-mark:nth-child(5n+1){  
+  height: $time-mark-height-long;
+}
+
+.time-mark:nth-child(20n+1){
+  background-color: $time-mark-color-long;
+}
+
+.time-mark:nth-child(20n+1)::after{  
+  position: absolute;
+  
+  color: $time-mark-number-color;
+  font-size: $time-mark-number-font-size; 
+  
+  bottom: $time-mark-number-bottom;
+  right: $time-mark-number-right;
+}
+
+@for $i from 0 through 11{
+  .time-mark:nth-child(#{($i*20)+1})::after{  
+    $aux: (($i*5)+30)%60;
+    @if ($aux == 0){
+      $aux: 60;
+    }
+    content: "#{$aux}";    
+    transform: rotate(#{-($i*30)}deg);
+  }
+}
+
+@for $i from 0 through 240 {
+  .r#{$i} {
+    $aux: $dial-width-radio - 5px;
+    @if ($i%5 == 0) {
+      $aux: $aux - 3px;      
+    }
+    transform: rotate(#{$i*1.5}deg) translate(0px,$aux);
+  }
+}
+
+.time-hand{
+  position: absolute;
+  
+  z-index: 100;
+  
+  width: $time-hand-width;
+  height: $time-hand-height;
+  background-color: $time-hand-background-color;   
+  transform: translate(0, $time-hand-transform-y);
+  
+  @if($time-hand-animated){
+    animation-name: sixteen-second;
+    animation-duration: 60s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;  
+  }
+}
+
+.time-hand.blue{
+  background-color: #5a7bc0;
+  @if($lap-hand-animated){
+    animation-delay: $lap-hand-animatation-dealy;
+  }
+}
+
+.center{
+  position: absolute;
+  
+  border-radius: 100%;
+  z-index: 9999;
+ 
+  width: $center-width;
+  height: $center-width;
+  
+  background-color: $center-bck-color;
+  border: $center-border-size solid $center-border-color ;
+}
+
+@keyframes sixteen-second {
+  from {
+    transform: rotate(0deg) translate(0px,$time-hand-transform-y);
+  }
+  to {   
+    transform: rotate(360deg) translate(0px,$time-hand-transform-y);
+  }
+}
+
+.time-display{
+  position: absolute;  
+  bottom: 100px;
+  
+  font-size: $time-display-font-size;
+  color: $time-display-color;
+}
+
+.sub-dial{
+  position: absolute;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  border-radius: 100%;
+  
+  width: $sub-dial-width;
+  height: $sub-dial-height;  
+  top: $sub-dial-top; 
+}
+
+.time-mark-sub{
+  position: absolute;
+  
+  width: $time-mark-sub-width;
+  height: $time-mark-sub-height;
+  border-radius: $time-mark-sub-border-radius;
+  background-color: $time-mark-sub-background-color;  
+}
+
+.time-mark-sub:nth-child(2n+1){  
+  height: $time-mark-sub-height-long;
+}
+.time-mark-sub:nth-child(10n+1){  
+  background-color: white;  
+  height: $time-mark-sub-height-long + 2px;
+}
+.time-mark-sub:nth-child(10n+1):after{  
+  position: absolute;
+    
+  color: $time-mark-sub-number-color;
+  font-size: $time-mark-sub-number-font-size; 
+  
+  bottom: $time-mark-sub-number-bottom;
+  right: $time-mark-sub-number-right;  
+}
+
+@for $i from 0 through 5{
+  .time-mark-sub:nth-child(#{($i*10)+1})::after{  
+    $aux: (($i*5)-15)%30;
+    @if ($aux == 0){
+      $aux: 30;
+    }
+    content: "#{$aux}";    
+    transform: rotate(#{-($i*60)}deg);
+  }
+}
+
+@for $i from 0 through 60 {
+  .r60-#{$i} {
+    $aux: $sub-dial-width-radio - 5px;
+    @if ($i%2 == 0) {
+      $aux: $aux - 2px;      
+    }
+    transform: rotate(#{$i*6}deg) translate(0px,$aux);
+  }
+}
+
+.time-hand-sub{
+  position: absolute;
+  
+  z-index: 80;
+  
+  transform: rotate(90deg) translate($time-hand-sub-translate-x,0);
+  
+  width: $time-hand-sub-width;
+  height: $time-hand-sub-height;
+  background-color: $time-hand-sub-background-color;
+  
+  @if($time-hand-sub-animated){
+    animation-name: one-minute;
+    animation-duration: 1800s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;  
+  }
+}
+
+@keyframes one-minute {
+  from {
+    transform: rotate(90deg) translate($time-hand-sub-translate-x,0);
+  }
+  to {   
+    transform: rotate(450deg) translate($time-hand-sub-translate-x,0);
+  }
+}
+
+.time-hand-sub-center{
+  position: absolute;
+  
+  border-radius: 100%;
+  z-index: 80;
+ 
+  width: $time-hand-sub-center-width;
+  height: $time-hand-sub-center-width;
+  
+  background-color: $time-hand-sub-center-bck-color; 
+}
